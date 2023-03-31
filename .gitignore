@@ -1,0 +1,3 @@
+.gitignore
+/job_search_site/job_search_site/data_db.py
+main.py
