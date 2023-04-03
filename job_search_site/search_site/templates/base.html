@@ -36,10 +36,15 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'logout_user' %}">Выйти</a>
+
                 </li>
+                </ul>
+                <a class="navbar-brand" href="{% url 'logout_user' %}">Выйти</a>
+                <a class="navbar-brand" style="font-weight: bold; font-family: 'Times New Roman', Times, serif;"
+                    href="{% url 'user_home_page' %}">Welcome {{request.user.get_full_name}}
+                </a>
                 {% endif %}
-            </ul>
+
         </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
