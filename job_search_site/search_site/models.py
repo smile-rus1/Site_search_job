@@ -7,12 +7,11 @@ phoneNumberRegex = RegexValidator(regex=r"^\+?1?\d{8,15}$")
 
 
 class Applicant(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=16, validators=[phoneNumberRegex], unique=True)
     image = models.ImageField(upload_to="")
     gender = models.CharField(max_length=10)
     type = models.CharField(max_length=15)
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.first_name
@@ -43,7 +42,7 @@ class Job(models.Model):
     skills = models.CharField(max_length=200)
     creation_date = models.DateField()
 
-    company = models.ForeignKey(Company, on_delete=Company)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

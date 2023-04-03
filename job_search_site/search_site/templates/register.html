@@ -9,6 +9,11 @@
     {% csrf_token %}
 
     <div class="row">
+        <div>
+            <label title="Учтите имя потом поменять будет нельзя!">Имя профиля</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Введите имя профиля">
+        </div>
+        <br>
         <div class="form-group col-md-6">
             <label>Имя</label>
             <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Введите имя">
