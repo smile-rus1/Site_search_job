@@ -23,7 +23,7 @@ def user_login(request):
                 user1 = Applicant.objects.get(user=user)
                 if user1.type == "applicant":
                     login(request, user)
-                    return redirect("index")
+                    return redirect("user_home_page")
             else:
                 thank = True
                 return render(request, "user_login.html", {"thank": thank})
@@ -51,10 +51,11 @@ def register(request):
                                         password=password1, email=email)
         applicants = Applicant.objects.create(user=user, phone=number_phone, image=image,
                                               type="applicant", gender=gender)
+        login(request, user)
         user.save()
         applicants.save()
 
-        return render(request, "user_login.html")
+        return redirect("user_home_page")
 
     return render(request, "register.html")
 
@@ -62,3 +63,40 @@ def register(request):
 def logout_user(request):
     logout(request)
     return redirect("index")
+
+
+def user_home_page(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+
+    applicant = Applicant.objects.get(user=request.user)
+
+    if request.method == "POST":
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        phone = request.POST['phone']
+        gender = request.POST['gender']
+
+        applicant.user.email = email
+        applicant.user.first_name = first_name
+        applicant.user.last_name = last_name
+        applicant.phone = phone
+        applicant.gender = gender
+        applicant.save()
+        applicant.user.save()
+
+        try:
+            image = request.FILES['image']
+            applicant.image = image
+            applicant.save()
+
+        except:
+            pass
+
+        alert = True
+
+        return render(request, "user_home_page.html", {'alert': alert})
+
+    return render(request, "user_home_page.html", {'applicant': applicant})
+
