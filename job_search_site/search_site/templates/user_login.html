@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Авторизация пользователя {% endblock %}
+{% block user_login %} active {% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <h6>Еще не зарегестрировались? ---> <a href="{% url 'register' %}" type="submit" class="btn" style="background-color: #4f868c; color: white;">Регистрация</a>
+        </h6>
+    </div>
+    <div class="mb-3">
+        <label for="username" class="form-label"><i style="font-weight: bold;">Имя пользователя</i></label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Введите имя пользователя">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label"><i style="font-weight: bold;">Пароль</i></label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+    </div>
+    <br>
+    <input type="submit" value="Войти" class="btn" style="background-color: #4f868c; color: white; font-size: 50px  ;">
+</form>
+
+{% endblock %}

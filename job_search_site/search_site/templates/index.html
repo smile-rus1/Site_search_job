@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
+{% load static %}
 
-
-
+{% block title %} Job Portal {% endblock %}
+{% block home %} active {% endblock %}
 {% block content %}
+<div class="container-fluid mt-2">
+    <img src="{% static 'photo/Recruitment Vector.png' %}">
+</div>
 
+<div class="container-fluid mt-2" style="background-color: #4f86c; width: 100%;">
+    <div class="row">
+        <div class="col-md-4">
+            <h3 style="color: aliceblue">Связаться с нами</h3>
+            <p style="color: aliceblue">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;example@mail.ru</p>
+                <p style="color: aliceblue">Mobile No.:&nbsp;&nbsp;9745632121</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
