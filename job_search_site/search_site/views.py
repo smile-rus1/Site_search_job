@@ -242,3 +242,44 @@ def delete_company(request, myid):
     return redirect("all_companies")
 
 
+def change_status(request, myid):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    company = Company.objects.get(id=myid)
+
+    if request.method == "POST":
+        status = request.POST["status"]
+        company.status = status
+        company.save()
+        alert = True
+        return render(request, "change_status.html", {'alert': alert})
+
+    return render(request, "change_status.html", {"company": company})
+
+
+def accepted_company(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    company = Company.objects.filter(status="Accepted")
+
+    return render(request, "accepted_companies.html", {'companies': company})
+
+
+def rejected_company(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    company = Company.objects.filter(status="Rejected")
+
+    return render(request, "rejected_companies.html", {'companies': company})
+
+
+def pending_company(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    company = Company.objects.filter(status="pending")
+
+    return render(request, "pending_companies.html", {'companies': company})
