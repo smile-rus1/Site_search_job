@@ -27,6 +27,11 @@
 
 {% block js %}
 <script>
+    {% if message %}
+    alert("Подождите пока администратор примет вашу заявку");
+    window.location.href = "{% url 'index' %}company_login/"
+    {% endif %}
+
     {% if alert %}
     alert("Неправильные данные");
     window.location.href = "{% url 'index' %}company_login/"
