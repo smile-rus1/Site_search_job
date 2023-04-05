@@ -18,15 +18,17 @@ def user_login(request):
             username = request.POST["username"]
             password = request.POST["password"]
             user = authenticate(username=username, password=password)
-
-            if user is not None:
-                user1 = Applicant.objects.get(user=user)
-                if user1.type == "applicant":
-                    login(request, user)
-                    return redirect("user_home_page")
-            else:
-                thank = True
-                return render(request, "user_login.html", {"thank": thank})
+            try:
+                if user is not None:
+                    user1 = Applicant.objects.get(user=user)
+                    if user1.type == "applicant":
+                        login(request, user)
+                        return redirect("user_home_page")
+                else:
+                    thank = True
+                    return render(request, "user_login.html", {"thank": thank})
+            except:
+                ...
 
     return render(request, "user_login.html")
 
@@ -100,3 +102,88 @@ def user_home_page(request):
 
     return render(request, "user_home_page.html", {'applicant': applicant})
 
+
+def company_register(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+        number_phone = request.POST["phone"]
+        email = request.POST["email"]
+        gender = request.POST["gender"]
+        image = request.FILES["image"]
+        company_name = request.POST['company_name']
+
+        if password1 != password2:
+            messages.error(request, "Пароли не совпадают!")
+
+            return redirect("company_register")
+
+        user = User.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username,
+                                        password=password1)
+
+        company = Company.objects.create(user=user, phone=number_phone, gender=gender, image=image, company_name=company_name,
+                                         type="company", status="pending")
+        login(request, user)
+        user.save()
+        company.save()
+
+        return redirect("company_home_page")
+
+    return render(request, "company_register.html")
+
+
+def company_login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            user1 = Company.objects.get(user=user)
+            if user1.type == "company" and user1.status == "pending":
+                login(request, user)
+                return redirect("company_home_page")
+        else:
+            alert = True
+
+            return render(request, "company_login.html", {"alert": alert})
+
+    return render(request, "company_login.html")
+
+
+def company_home_page(request):
+    if not request.user.is_authenticated:
+        return redirect("company_login")
+    company = Company.objects.get(user=request.user)
+
+    if request.method == "POST":
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        phone = request.POST['phone']
+        gender = request.POST['gender']
+
+        company.user.email = email
+        company.user.first_name = first_name
+        company.user.last_name = last_name
+        company.phone = phone
+        company.gender = gender
+        company.save()
+        company.user.save()
+
+        try:
+            image = request.FILES['image']
+            company.image = image
+            company.save()
+
+        except:
+            pass
+
+        thank = True
+
+        return render(request, "company_home_page.html", {'alert': thank })
+
+    return render(request, "company_home_page.html", {'company': company})
