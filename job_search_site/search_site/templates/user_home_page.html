@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'user_navbar.html' %}
 {% block title %} Профиль пользователя {% endblock %}
 {% block home %} active {% endblock %}
-{% block css %}
-{% endblock %}
+
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -13,12 +13,12 @@
 
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>First Name</label>
+                        <label>Имя</label>
                         <input type="text" class="form-control mt-2" name="first_name" id="first_name"
                             value="{{applicant.user.first_name}}" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Last Name</label>
+                        <label>Фамилия</label>
                         <input type="text" class="form-control mt-2" name="last_name" id="last_name"
                         value="{{applicant.user.last_name}}" required>
                     </div>
@@ -26,7 +26,7 @@
 
                 <div class="row mt-4">
                     <div class="form-group col-md-12">
-                        <label>Username</label>
+                        <label>Никнейм профиля</label>
                         <input type="text" class="form-control mt-2" name="username" id="username"
                             value="{{applicant.user.username}}" readonly>
                     </div>
@@ -34,18 +34,18 @@
 
                 <div class="row mt-4">
                     <div class="form-group col-md-6">
-                        <label>Email Id</label>
+                        <label>Email</label>
                         <input type="email" class="form-control mt-2" name="email" id="email" value="{{applicant.user.email}}" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Contact Number</label>
+                        <label>Номер телефона</label>
                         <input type="tel" class="form-control mt-2" name="phone" id="phone" value="{{applicant.phone}}" required>
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <div class="form-group col-md-6">
-                        <label>Gender</label>
+                        <label>Пол</label>
                         {% if applicant.gender == "Мужчина" %}
                         <div class="mt-2" style="border: 1px solid lightgrey; padding: 5px; border-radius: 6px;">
                             <div class="form-check form-check-inline">
@@ -72,6 +72,7 @@
                         </div>
                         {% endif %}
                     </div>
+
                     <div class="form-group col-md-6">
                         <label>Фото профиля</label>
                         <input type="file" class="form-control mt-2" name="image" id="image">
@@ -88,10 +89,11 @@
     </div>
 </div>
 {% endblock %}
+
 {% block js %}
 <script>
     {% if alert %}
-    alert("Profile Updated Successfully")
+    alert("Профиль изменен")
     window.location = "{% url 'index' %}user_home_page/"
     {% endif %}
 </script>
