@@ -143,7 +143,8 @@ def company_login(request):
 
         if user is not None:
             user1 = Company.objects.get(user=user)
-            if user1.type == "company" and user1.status == "pending":
+            # будет менять статус админ который будет смотреть
+            if user1.type == "company" and user1.status != "pending":
                 login(request, user)
                 return redirect("company_home_page")
         else:
@@ -187,3 +188,46 @@ def company_home_page(request):
         return render(request, "company_home_page.html", {'alert': thank })
 
     return render(request, "company_home_page.html", {'company': company})
+
+
+def admin_login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(username=username, password=password)
+        try:
+            if user.is_superuser:
+                login(request, user)
+
+                return redirect("all_companies")
+
+            else:
+                alert = True
+
+                return render(request, "admin_login.html", {"alert": alert})
+        except:
+            alert = True
+            return render(request, "admin_login.html", {"alert": alert})
+
+    return render(request, "admin_login.html")
+
+
+def all_companies(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    companies = Company.objects.all()
+
+    return render(request, "all_companies.html", {"companies": companies})
+
+
+def delete_company(request, myid):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    company = User.objects.filter(id=myid)
+    company.delete()
+
+    return redirect("all_companies")
+
