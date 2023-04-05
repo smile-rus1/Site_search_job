@@ -51,10 +51,10 @@
                   Компании
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Принятые</a></li>
-                  <li><a class="dropdown-item" href="#">В ожидании</a></li>
-                  <li><a class="dropdown-item" href="#">Отклоненный</a></li>
-                  <li><a class="dropdown-item" href="#">Все компании</a></li>
+                  <li><a class="dropdown-item" href="{% url 'accepted_companies' %}">Принятые</a></li>
+                  <li><a class="dropdown-item" href="{% url 'pending_companies' %}">В ожидании</a></li>
+                  <li><a class="dropdown-item" href="{% url 'rejected_company' %}">Отклоненные</a></li>
+                  <li><a class="dropdown-item" href="{% url 'all_companies' %}">Все компании</a></li>
                 </ul>
               </li>
             </ul>

@@ -31,7 +31,7 @@
             <td>{{company.company_name}}</td>
             <td><img src="{{company.image.url}}" class="rounded-circle" width="90px" height="70px"></td>
             <td>{{company.status}}</td>
-            <td><a href="/change_status/{{company.id}}/" class="btn btn-secondary">Поменять статус</a></td>
+            <td><a href="{% url 'index' %}change_status/{{company.id}}/" class="btn btn-secondary">Поменять статус</a></td>
             <td><a href="{% url 'index' %}delete_company/{{company.user.id}}/" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить эту компанию?')">Удалить</a></td>
         </tr>
         {% endfor %}
