@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
@@ -8,6 +10,8 @@ from .models import Applicant, Job, Company, Application, User
 
 def index(request):
     return render(request, "index.html")
+
+
 
 
 def user_login(request):
@@ -105,6 +109,23 @@ def user_home_page(request):
     return render(request, "user_home_page.html", {'applicant': applicant})
 
 
+def all_jobs(request):
+    jobs = Job.objects.all().order_by("-start_date")
+    applicant = Applicant.objects.get(user=request.user)
+    apply = Application.objects.filter(applicant=applicant)
+    data = []
+    for i in apply:
+        data.append(i)
+
+    return render(request, "all_jobs.html", {"jobs": jobs, "data": data})
+
+
+def job_details(request, job_id):
+    job = Job.objects.filter(id=job_id)
+
+    return render(request, "job_details.html", {"job": job})
+
+
 def company_register(request):
     try:
         if request.method == "POST":
@@ -200,6 +221,52 @@ def company_home_page(request):
         return render(request, "company_home_page.html", {'alert': thank})
 
     return render(request, "company_home_page.html", {'company': company})
+
+
+def job_list(request):
+    if not request.user.is_authenticated:
+        return redirect("company_login")
+    try:
+        companies = Company.objects.get(user=request.user)
+
+        jobs = Job.objects.filter(company=companies)
+    except:
+        return render(request, "job_list.html")
+
+    return render(request, "job_list.html", {'jobs': jobs})
+
+
+def add_job(request):
+    if not request.user.is_authenticated:
+        return redirect("company_login")
+
+    try:
+        if Company.objects.get(user=request.user):
+            ...
+    except:
+        return redirect("company_login")
+
+    if request.method == "POST":
+        title = request.POST["job_title"]
+        start_date = request.POST["start_date"]
+        end_date = request.POST["end_date"]
+        experience = request.POST["experience"]
+        salary = request.POST["salary"]
+        skills = request.POST["skills"]
+        description = request.POST["description"]
+        location = request.POST["location"]
+
+        user = request.user
+        company = Company.objects.get(user=user)
+        job = Job.objects.create(company=company, title=title, start_date=start_date, end_date=end_date, salary=salary,
+                                 experience=experience, skills=skills, description=description, image=company.image,
+                                 creation_date=date.today(), location=location)
+        job.save()
+        alert = True
+
+        return render(request, "add_jobs.html", {"alert": alert})
+
+    return render(request, "add_jobs.html")
 
 
 def admin_login(request):
