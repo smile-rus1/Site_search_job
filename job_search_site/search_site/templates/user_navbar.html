@@ -33,9 +33,8 @@
 </head>
 
 <body>
-
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-      <a class="navbar-brand" href="#"><span class="head1">Job</span><span class="head2">Portal</span></a>
+      <a class="navbar-brand" href="#"><span class="head1">Портал работы для </span><span class="head2">Студентов</span></a>
       <div class="container w-50">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +46,7 @@
               <a class="nav-link {% block news %} {% endblock %}" href="#">Новости</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% block job_list %}{% endblock %}" href="#">Поиск работы</a>
+              <a class="nav-link {% block job_list %}{% endblock %}" href="{% url 'all_jobs' %}">Поиск работы</a>
             </li>
           </ul>
         </div>
