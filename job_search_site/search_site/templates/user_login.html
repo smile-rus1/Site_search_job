@@ -25,3 +25,13 @@
 </form>
 
 {% endblock %}
+
+{% block js %}
+<script>
+    {% if alert %}
+    alert("Неправильный ввод данных!")
+    window.location = "{% url 'index' %}user_login/"
+    {% endif %}
+</script>
+
+{% endblock %}
