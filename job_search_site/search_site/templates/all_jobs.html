@@ -1,0 +1,42 @@
+{% extends 'user_navbar.html' %}
+
+{% block title %} Работа {% endblock %}
+{% block job_list %} active {% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+<table class="table table-hover" id="example">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Название компании</th>
+            <th>Название работы</th>
+            <th>Заработная плата</th>
+            <th>Локация</th>
+            <th>Создана</th>
+            <th>Просмотреть вакансию</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{job.company.company_name}}</td>
+            <td>{{job.title}}</td>
+            <td>{{job.salary}}</td>
+            <td>{{job.location}}</td>
+            <td>{{job.creation_date}}</td>
+
+            {% if job.id in data %}
+            <td><a class="btn btn-success">Applied</a></td>
+            {% else %}
+            <td><a href="{url 'index'}job_details/{{job.id}}/" class="btn btn-success">Посмотреть вакансию</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
