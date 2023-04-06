@@ -11,24 +11,26 @@ def index(request):
 
 
 def user_login(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and (not request.user.is_superuser or not request.user.is_staff):
         return redirect("index")
-    else:
-        if request.method == "POST":
-            username = request.POST["username"]
-            password = request.POST["password"]
-            user = authenticate(username=username, password=password)
-            try:
-                if user is not None:
-                    user1 = Applicant.objects.get(user=user)
-                    if user1.type == "applicant":
-                        login(request, user)
-                        return redirect("user_home_page")
-                else:
-                    thank = True
-                    return render(request, "user_login.html", {"thank": thank})
-            except:
-                ...
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(username=username, password=password)
+        try:
+            if user is not None:
+                user1 = Applicant.objects.get(user=user)
+                if user1.type == "applicant":
+                    login(request, user)
+                    return redirect("user_home_page")
+            else:
+                print(1)
+                thank = True
+
+                return render(request, "user_login.html", {"alert": thank})
+        except:
+            ...
 
     return render(request, "user_login.html")
 
@@ -283,3 +285,22 @@ def pending_company(request):
     company = Company.objects.filter(status="pending")
 
     return render(request, "pending_companies.html", {'companies': company})
+
+
+def all_applicant(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    applicants = Applicant.objects.all()
+
+    return render(request, "all_applicant.html", {"applicants": applicants})
+
+
+def delete_applicant(request, myid):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    applicant = User.objects.filter(id=myid)
+    applicant.delete()
+
+    return redirect("all_applicant")
