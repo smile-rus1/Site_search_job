@@ -140,6 +140,37 @@ def job_details(request, job_id):
     return render(request, "job_details.html", {"job": job})
 
 
+def job_apply(request, myid: int):
+    if not check_applicant(request):
+        logout(request)
+
+    applicant = Applicant.objects.get(user=request.user)
+    job = Job.objects.get(id=myid)
+    date1 = date.today()
+
+    if job.end_date < date1:
+        closed = True
+
+        return render(request, "job_apply.html", {"closed": closed})
+
+    elif job.start_date > date1:
+        notopen = True
+
+        return render(request, "job_apply.html", {"notopen": notopen})
+
+    else:
+        if request.method == "POST":
+            resume = request.FILES["resume"]
+            Application.objects.create(job=job, company=job.company, applicant=applicant, resume=resume,
+                                       apply_date=date.today())
+
+            alert = True
+
+            return render(request, "job_apply.html", {"alert": alert})
+
+    return render(request, "job_apply.html", {"job": job})
+
+
 def company_register(request):
     if request.user.is_authenticated:
         return redirect("company_home_page")
