@@ -1,0 +1,34 @@
+{% extends 'company_navbar.html' %}
+
+{% block title %} Все кандидаты {% endblock %}
+{% block all_applicants %} active {% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <table class="table table-hover" id="example">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Название работы</th>
+                <th>Кандидат</th>
+                <th>Подал</th>
+                <th>Резюме</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in application %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.job}}</td>
+                <td>{{i.applicant}}</td>
+                <td>{{i.apply_date}}</td>
+                <td><a href="{{i.resume.url}}" class="btn"><i class="fa fa-file"></i></a></td>
+                <td><a href="#" class="btn"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}
