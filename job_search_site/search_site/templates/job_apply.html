@@ -1,0 +1,34 @@
+{% extends 'user_navbar.html' %}
+
+{% block title %} Отправления резюме {% endblock %}
+{% block job_list %} active {% endblock %}
+
+{% block content %}
+<div class="container mt-4 shadow-lg py-3 mb-4">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        <label>Отправить резюме</label>
+        <input type="file" class="form-control mt-3" name="resume" id="resume">
+    </div>
+    <input type="submit" value="Отправить" class="btn btn-danger mt-3">
+</form>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    {% if alert %}
+    alert("Резюме отправлено компании успешно!");
+    document.location = "{% url 'index' %}all_jobs/"
+    {% endif %}
+    {% if closed %}
+    alert("Время для принятия заявок закончилось!")
+    document.location = "{% url 'index' %}all_jobs/"
+    {% endif %}
+    {% if notopen %}
+    alert("Время для принятия заявок еще не началось!")
+    document.location = "{% url 'index' %}all_jobs/"
+    {% endif %}
+</script>
+{% endblock %}
+
