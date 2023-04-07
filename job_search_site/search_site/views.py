@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import Applicant, Job, Company, Application, User
-
+from .check_all_users import check_applicant, check_company, check_admin
 
 def index(request):
     return render(request, "index.html")
@@ -77,6 +77,10 @@ def user_home_page(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
 
+    if not check_applicant(request):
+        logout(request)
+        return redirect("index")
+
     applicant = Applicant.objects.get(user=request.user)
 
     if request.method == "POST":
@@ -110,6 +114,11 @@ def user_home_page(request):
 
 
 def all_jobs(request):
+    if not check_applicant(request):
+        logout(request)
+
+        return redirect("index")
+
     jobs = Job.objects.all().order_by("-start_date")
     applicant = Applicant.objects.get(user=request.user)
     apply = Application.objects.filter(applicant=applicant)
@@ -121,12 +130,20 @@ def all_jobs(request):
 
 
 def job_details(request, job_id):
+    if not check_applicant(request):
+        logout(request)
+
+        return redirect("index")
+
     job = Job.objects.filter(id=job_id)
 
     return render(request, "job_details.html", {"job": job})
 
 
 def company_register(request):
+    if request.user.is_authenticated:
+        return redirect("company_home_page")
+
     try:
         if request.method == "POST":
             username = request.POST["username"]
@@ -161,6 +178,9 @@ def company_register(request):
 
 
 def company_login(request):
+    if request.user.is_authenticated:
+        return redirect("company_home_page")
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -190,6 +210,11 @@ def company_login(request):
 def company_home_page(request):
     if not request.user.is_authenticated:
         return redirect("company_login")
+
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
 
     company = Company.objects.get(user=request.user)
 
@@ -226,6 +251,12 @@ def company_home_page(request):
 def job_list(request):
     if not request.user.is_authenticated:
         return redirect("company_login")
+
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
+
     try:
         companies = Company.objects.get(user=request.user)
 
@@ -239,6 +270,11 @@ def job_list(request):
 def add_job(request):
     if not request.user.is_authenticated:
         return redirect("company_login")
+
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
 
     try:
         if Company.objects.get(user=request.user):
@@ -270,6 +306,9 @@ def add_job(request):
 
 
 def admin_login(request):
+    if request.user.is_authenticated:
+        return redirect("all_companies")
+
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -293,6 +332,11 @@ def admin_login(request):
 
 
 def all_companies(request):
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
     if not request.user.is_authenticated:
         return redirect("admin_login")
 
@@ -305,6 +349,11 @@ def delete_company(request, myid):
     if not request.user.is_authenticated:
         return redirect("admin_login")
 
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
     company = User.objects.filter(id=myid)
     company.delete()
 
@@ -314,6 +363,11 @@ def delete_company(request, myid):
 def change_status(request, myid):
     if not request.user.is_authenticated:
         return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
 
     company = Company.objects.get(id=myid)
 
@@ -331,6 +385,11 @@ def accepted_company(request):
     if not request.user.is_authenticated:
         return redirect("admin_login")
 
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
     company = Company.objects.filter(status="Accepted")
 
     return render(request, "accepted_companies.html", {'companies': company})
@@ -339,6 +398,11 @@ def accepted_company(request):
 def rejected_company(request):
     if not request.user.is_authenticated:
         return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
 
     company = Company.objects.filter(status="Rejected")
 
@@ -349,6 +413,11 @@ def pending_company(request):
     if not request.user.is_authenticated:
         return redirect("admin_login")
 
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
     company = Company.objects.filter(status="pending")
 
     return render(request, "pending_companies.html", {'companies': company})
@@ -358,6 +427,11 @@ def all_applicant(request):
     if not request.user.is_authenticated:
         return redirect("admin_login")
 
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
     applicants = Applicant.objects.all()
 
     return render(request, "all_applicant.html", {"applicants": applicants})
@@ -366,6 +440,11 @@ def all_applicant(request):
 def delete_applicant(request, myid):
     if not request.user.is_authenticated:
         return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
 
     applicant = User.objects.filter(id=myid)
     applicant.delete()
