@@ -68,6 +68,6 @@
 {% block js %}
 {% if alert %}
     alert("Вакансия успешно добавлена")
-    window.location = "{% url 'index' %}job_list"
+    window.location = "{% url 'index' %}job_list/"
     {% endif %}
 {% endblock %}
