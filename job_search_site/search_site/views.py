@@ -135,7 +135,7 @@ def job_details(request, job_id):
 
         return redirect("index")
 
-    job = Job.objects.filter(id=job_id)
+    job = Job.objects.get(id=job_id)
 
     return render(request, "job_details.html", {"job": job})
 
@@ -246,6 +246,21 @@ def company_home_page(request):
         return render(request, "company_home_page.html", {'alert': thank})
 
     return render(request, "company_home_page.html", {'company': company})
+
+
+def all_applicants_for_company(request):
+    if not request.user.is_authenticated:
+        return redirect("company_login")
+
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
+
+    company = Company.objects.get(user=request.user)
+    application = Application.objects.filter(company=company)
+
+    return render(request, "applicants_for_company.html", {'application': application})
 
 
 def job_list(request):
@@ -440,6 +455,11 @@ def all_applicant(request):
 def delete_applicant(request, myid):
     if not request.user.is_authenticated:
         return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
 
     if not check_admin(request):
         logout(request)
