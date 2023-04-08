@@ -351,6 +351,51 @@ def add_job(request):
     return render(request, "add_jobs.html")
 
 
+def edit_job(request, id_job: int):
+    if not request.user.is_authenticated:
+        return redirect("company_login")
+
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
+
+    job = Job.objects.get(id=id_job)
+
+    if request.method == "POST":
+        title = request.POST['job_title']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        salary = request.POST['salary']
+        experience = request.POST['experience']
+        location = request.POST['location']
+        skills = request.POST['skills']
+        description = request.POST['description']
+
+        job.title = title
+        job.salary = salary
+        job.experience = experience
+        job.location = location
+        job.skills = skills
+        job.description = description
+
+        job.save()
+
+        if start_date:
+            job.start_date = start_date
+            job.save()
+
+        if end_date:
+            job.end_date = end_date
+            job.save()
+
+        alert = True
+
+        return render(request, "edit_job.html", {"alert": alert})
+
+    return render(request, "edit_job.html", {"job": job})
+
+
 def admin_login(request):
     if request.user.is_authenticated:
         return redirect("all_companies")
