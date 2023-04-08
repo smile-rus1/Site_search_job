@@ -124,7 +124,7 @@ def all_jobs(request):
     apply = Application.objects.filter(applicant=applicant)
     data = []
     for i in apply:
-        data.append(i)
+        data.append(i.job.id)
 
     return render(request, "all_jobs.html", {"jobs": jobs, "data": data})
 

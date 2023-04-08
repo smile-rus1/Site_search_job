@@ -30,7 +30,7 @@
             <td>{{job.creation_date}}</td>
 
             {% if job.id in data %}
-            <td><a class="btn btn-success">Applied</a></td>
+            <td><a class="btn btn-success">Отправлено</a></td>
             {% else %}
             <td><a href="{% url 'index' %}job_details/{{job.id}}" class="btn btn-success">Посмотреть вакансию</a></td>
             {% endif %}
