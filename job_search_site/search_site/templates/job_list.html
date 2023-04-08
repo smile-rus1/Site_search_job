@@ -23,7 +23,7 @@
             <td>{{job.title}}</td>
             <td>{{job.creation_date}}</td>
             {% if job.company %}
-            <td><a href="/edit_job/{{job.id}}/" class="btn"><i class="fa fa-edit"></i></a></td>
+            <td><a href="{% url 'index' %}edit_job/{{job.id}}" class="btn"><i class="fa fa-edit"></i></a></td>
             <td><a href="#" class="btn"><i class="fa fa-trash"></i></a></td>
             {% endif %}
         </tr>
