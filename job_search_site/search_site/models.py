@@ -16,6 +16,9 @@ class Applicant(models.Model):
     def __str__(self):
         return self.user.first_name
 
+    class Meta:
+        verbose_name_plural = "Кандитаты"
+
 
 class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,6 +31,9 @@ class Company(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        verbose_name_plural = "Компании"
 
 
 class Job(models.Model):
@@ -47,6 +53,10 @@ class Job(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name_plural = "Работа"
+        ordering = ["start_date"]
+
 
 class Application(models.Model):
     company = models.CharField(max_length=200, default="")
@@ -58,3 +68,21 @@ class Application(models.Model):
 
     def __str__(self):
         return str(self.applicant)
+
+    class Meta:
+        verbose_name_plural = "Отправка резюме"
+
+
+class News(models.Model):
+    title = models.CharField(max_length=50, null=False)
+    content = models.CharField(max_length=500, null=False)
+    date_add = models.DateField(auto_now_add=True, null=False)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.title)
+
+    class Meta:
+        verbose_name_plural = "Новости"
+        ordering = ["-date_add"]
