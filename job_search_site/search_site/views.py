@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .models import Applicant, Job, Company, Application, User
+from .models import Applicant, Job, Company, Application, User, News
 from .check_all_users import check_applicant, check_company, check_admin
 
 
@@ -73,8 +73,16 @@ def logout_user(request):
 
 
 def news_user(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
 
-    return render(request, "user_news.html")
+    if not check_applicant(request):
+        logout(request)
+        return redirect("index")
+
+    news = News.objects.all()
+
+    return render(request, "user_news.html", {"news": news})
 
 
 def user_home_page(request):
@@ -284,8 +292,17 @@ def company_home_page(request):
 
 
 def news_company(request):
+    if not request.user.is_authenticated:
+        return redirect('company_login"')
 
-    return render(request, "company_news.html")
+    if not check_company(request):
+        logout(request)
+
+        return redirect("index")
+
+    news = News.objects.all()
+
+    return render(request, "company_news.html", {"news": news})
 
 
 def all_applicants_for_company(request):
@@ -298,7 +315,7 @@ def all_applicants_for_company(request):
         return redirect("index")
 
     company = Company.objects.get(user=request.user)
-    application = Application.objects.filter(company=company)
+    application = Application.objects.filter(company=company).order_by("-apply_date")
 
     return render(request, "applicants_for_company.html", {'application': application})
 
