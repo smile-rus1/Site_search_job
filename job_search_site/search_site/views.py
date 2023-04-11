@@ -8,10 +8,9 @@ from django.shortcuts import render, redirect
 from .models import Applicant, Job, Company, Application, User
 from .check_all_users import check_applicant, check_company, check_admin
 
+
 def index(request):
     return render(request, "index.html")
-
-
 
 
 def user_login(request):
@@ -71,6 +70,11 @@ def register(request):
 def logout_user(request):
     logout(request)
     return redirect("index")
+
+
+def news_user(request):
+
+    return render(request, "user_news.html")
 
 
 def user_home_page(request):
@@ -277,6 +281,11 @@ def company_home_page(request):
         return render(request, "company_home_page.html", {'alert': thank})
 
     return render(request, "company_home_page.html", {'company': company})
+
+
+def news_company(request):
+
+    return render(request, "company_news.html")
 
 
 def all_applicants_for_company(request):
