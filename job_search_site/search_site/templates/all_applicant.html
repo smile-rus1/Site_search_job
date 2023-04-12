@@ -11,10 +11,10 @@
         <thead>
             <tr>
                 <th>id</th>
-                <th>Заголовок</th>
-                <th>Кандитат</th>
-                <th>Загружено</th>
-                <th>Резюме</th>
+                <th>Имя пользователя</th>
+                <th>Фамилия пользователя</th>
+                <th>Телефон</th>
+                <th>Тип</th>
                 <th>Удалить</th>
             </tr>
         </thead>
@@ -22,10 +22,10 @@
             {% for i in applicants %}
             <tr>
                 <td>{{forloop.counter}}</td>
-                <td>{{i.job}}</td>
-                <td>{{i.applicant}}</td>
-                <td>{{i.apply_date}}</td>
-                <td><a href="{{i.resume.url}}" class="btn"><i class="fa fa-file"></i></a></td>
+                <td>{{i.user.first_name}}</td>
+                <td>{{i.user.last_name}}</td>
+                <td>{{i.phone}}</td>
+                <td>{{i.type}}</td>
                 <td><a href="{% url 'index' %}delete_applicant/{{i.user.id}}/" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить этого кандидата?')">Удалить</a></td>
             </tr>
             {% endfor %}
