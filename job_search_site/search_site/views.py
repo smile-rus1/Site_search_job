@@ -62,7 +62,7 @@ def register(request):
         user.save()
         applicants.save()
 
-        return redirect("user_home_page")
+        return redirect("company_login")
 
     return render(request, "register.html")
 
@@ -232,7 +232,7 @@ def company_login(request):
         if user is not None:
             user1 = Company.objects.get(user=user)
 
-            if user1.type == "company" and user1.status == "Accepted":
+            if user1.type == "company" and user1.status == "pending":
                 messages.info(request, "Подождите пока администратор одобрит заявку")
 
                 message = True
