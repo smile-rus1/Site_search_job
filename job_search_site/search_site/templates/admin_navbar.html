@@ -47,20 +47,26 @@
           <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
-                <a class="nav-link active dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link {% block company %} {% endblock %}  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Компании
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                  <li><a class="dropdown-item" href="{% url 'accepted_companies' %}">Принятые</a></li>
-                  <li><a class="dropdown-item" href="{% url 'pending_companies' %}">В ожидании</a></li>
-                  <li><a class="dropdown-item" href="{% url 'rejected_company' %}">Отклоненные</a></li>
-                  <li><a class="dropdown-item" href="{% url 'all_companies' %}">Все компании</a></li>
+                  <li><a class="dropdown-item {% block accept %} {% endblock %}" href="{% url 'accepted_companies' %}">Принятые</a></li>
+                  <li><a class="dropdown-item {% block pend %} {% endblock %}" href="{% url 'pending_companies' %}">В ожидании</a></li>
+                  <li><a class="dropdown-item {% block rej %} {% endblock %}" href="{% url 'rejected_company' %}">Отклоненные</a></li>
+                  <li><a class="dropdown-item {% block all %} {% endblock %}" href="{% url 'all_companies' %}">Все компании</a></li>
                 </ul>
               </li>
             </ul>
           </div>
           <li class="nav-item">
-            <a class="nav-link {% block view_applicants %} {% endblock %}" href="{% url 'all_applicant' %}">Кандидаты</a>
+            <a class="nav-link {% block all_applicants %} {% endblock %}" href="{% url 'all_applicant' %}">Кандидаты</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block news %} {% endblock %}" href="{% url 'admin_news' %}">Новости</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block add_news %} {% endblock %}" href="{% url 'add_news' %}">Добавить новости</a>
           </li>
         </ul>
       </div>

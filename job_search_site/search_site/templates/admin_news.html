@@ -1,0 +1,21 @@
+{% extends 'admin_navbar.html' %}
+{% block title %} Новости {% endblock %}
+{% block news %} active {% endblock %}
+
+
+{% block content %}
+<div class="container mt-3">
+    {% for n in news %}
+    <div class="row mt-3">
+        <h2>{{ n.title }}</h2>
+        <p>{{ n.content }}</p>
+        <div class="form-group col-md-3">
+            <p>Дата добавления: {{ n.date_add}}</p>
+        </div>
+        <div class="form-group col-md-3">
+            <a href="{% url 'index' %}delete_news/{{n.id}}/" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить эту статью?')">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

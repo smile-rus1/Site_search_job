@@ -1,0 +1,23 @@
+{% extends 'admin_navbar.html' %}
+{% block title %} Новости {% endblock %}
+{% block add_news %} active {% endblock %}
+
+
+{% block content %}
+
+<form class="container mt-3" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-group col-md-6">
+    <label>Заголовок статьи</label>
+    <input type="text" class="form-control" name="title" id="title" placeholder="Введите заголовок статьи" required>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Содержимое статьи</label>
+    <textarea class="form-control" rows="10" name="content" id="content" placeholder="Введите содержимое" required></textarea>
+  </div>
+  <div class="form-group col-md-6">
+    <input type="submit" value="Отправить" class="btn mt-3" style="background-color: #4f868c; color: white; font-size: larger; width: 8rem;">
+  </div>
+</form>
+
+{% endblock %}

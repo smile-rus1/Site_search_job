@@ -3,7 +3,7 @@ from django.urls import path
 from .views import index, user_login, logout_user, register, user_home_page, company_register, company_login, \
     company_home_page, admin_login, all_companies, delete_company, change_status, accepted_company, rejected_company, \
     pending_company, all_applicant, delete_applicant, all_jobs, job_details, add_job, job_list, \
-    all_applicants_for_company, job_apply, edit_job, news_user, news_company
+    all_applicants_for_company, job_apply, edit_job, news_user, news_company, admin_news, add_news, delete_news
 
 urlpatterns = [
     path("", index, name='index'),
@@ -37,4 +37,7 @@ urlpatterns = [
     path("pending_companies/", pending_company, name="pending_companies"),
     path("all_applicants/", all_applicant, name="all_applicant"),
     path("delete_applicant/<int:myid>/", delete_applicant, name="delete_applicant"),
+    path("admin_news/", admin_news, name="admin_news"),
+    path("add_news/", add_news, name="add_news"),
+    path("delete_news/<int:id_news>/", delete_news, name="delete_news"),
 ]

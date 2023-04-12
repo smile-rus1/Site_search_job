@@ -232,7 +232,7 @@ def company_login(request):
         if user is not None:
             user1 = Company.objects.get(user=user)
 
-            if user1.type == "company" and user1.status == "pending":
+            if user1.type == "company" and user1.status == "Accepted":
                 messages.info(request, "Подождите пока администратор одобрит заявку")
 
                 message = True
@@ -563,12 +563,61 @@ def delete_applicant(request, myid):
 
         return redirect("index")
 
+    applicant = User.objects.filter(id=myid)
+    applicant.delete()
+
+    return redirect("all_applicant")
+
+
+def admin_news(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
     if not check_admin(request):
         logout(request)
 
         return redirect("index")
 
-    applicant = User.objects.filter(id=myid)
-    applicant.delete()
+    news = News.objects.all()
 
-    return redirect("all_applicant")
+    return render(request, "admin_news.html", {"news": news})
+
+
+def add_news(request):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
+    try:
+        if request.method == "POST":
+            title = request.POST["title"]
+            content = request.POST["content"]
+
+            news = News.objects.create(title=title, content=content, user_id=request.user.id)
+            news.save()
+
+            messages.success(request, "Статья добавлена!")
+            return redirect("admin_news")
+    except:
+        messages.error(request, "Возникла ошибка в заполнении")
+
+    return render(request, "add_news.html")
+
+
+def delete_news(request, id_news):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
+    news = News.objects.filter(id=id_news)
+    news.delete()
+
+    return redirect("admin_news")
