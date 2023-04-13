@@ -16,6 +16,9 @@ def user_login(request):
     if request.user.is_authenticated and (not request.user.is_superuser or not request.user.is_staff):
         return redirect("index")
 
+    if request.user.is_authenticated and (request.user.is_superuser or request.user.is_staff):
+        return redirect("all_companies")
+
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -38,6 +41,12 @@ def user_login(request):
 
 
 def register(request):
+    if request.user.is_authenticated and (not request.user.is_superuser or not request.user.is_staff):
+        return redirect("index")
+
+    if request.user.is_authenticated and (request.user.is_superuser or request.user.is_staff):
+        return redirect("all_companies")
+
     if request.method == "POST":
         username = request.POST["username"]
         first_name = request.POST["first_name"]
@@ -183,6 +192,12 @@ def job_apply(request, myid: int):
 
 
 def company_register(request):
+    if request.user.is_authenticated and (not request.user.is_superuser or not request.user.is_staff):
+        return redirect("company_home_page")
+
+    if request.user.is_authenticated and (request.user.is_superuser or request.user.is_staff):
+        return redirect("all_companies")
+
     if request.user.is_authenticated:
         return redirect("company_home_page")
 
@@ -220,8 +235,11 @@ def company_register(request):
 
 
 def company_login(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and (not request.user.is_superuser or not request.user.is_staff):
         return redirect("company_home_page")
+
+    if request.user.is_authenticated and (request.user.is_superuser or request.user.is_staff):
+        return redirect("all_companies")
 
     if request.method == "POST":
         username = request.POST['username']
