@@ -2,7 +2,6 @@ from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import Applicant, Job, Company, Application, User, News
@@ -293,7 +292,7 @@ def company_home_page(request):
 
 def news_company(request):
     if not request.user.is_authenticated:
-        return redirect('company_login"')
+        return redirect("company_login")
 
     if not check_company(request):
         logout(request)
@@ -621,3 +620,28 @@ def delete_news(request, id_news):
     news.delete()
 
     return redirect("admin_news")
+
+
+def update_news(request, id_news: int):
+    if not request.user.is_authenticated:
+        return redirect("admin_login")
+
+    if not check_admin(request):
+        logout(request)
+
+        return redirect("index")
+
+    news = News.objects.get(id=id_news)
+
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+
+        news.title = title
+        news.content = content
+
+        news.save()
+
+        return redirect("admin_news")
+
+    return render(request, "update_news.html", {"news": news})

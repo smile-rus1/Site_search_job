@@ -3,7 +3,8 @@ from django.urls import path
 from .views import index, user_login, logout_user, register, user_home_page, company_register, company_login, \
     company_home_page, admin_login, all_companies, delete_company, change_status, accepted_company, rejected_company, \
     pending_company, all_applicant, delete_applicant, all_jobs, job_details, add_job, job_list, \
-    all_applicants_for_company, job_apply, edit_job, news_user, news_company, admin_news, add_news, delete_news
+    all_applicants_for_company, job_apply, edit_job, news_user, news_company, admin_news, add_news, delete_news, \
+    update_news
 
 urlpatterns = [
     path("", index, name='index'),
@@ -15,7 +16,7 @@ urlpatterns = [
     path("all_jobs/", all_jobs, name="all_jobs"),
     path("job_details/<int:job_id>", job_details, name="job_details"),
     path("job_apply/<int:myid>", job_apply, name="job_apply"),
-    path("news_user", news_user, name="news_user"),
+    path("news_user/", news_user, name="news_user"),
 
     # company
     path("company_login/", company_login, name="company_login"),
@@ -25,7 +26,7 @@ urlpatterns = [
     path("edit_job/<int:id_job>", edit_job, name="edit_job"),
     path("job_list/", job_list, name="job_list"),
     path("all_applicants_for_company/", all_applicants_for_company, name="all_applicants_for_company"),
-    path("news_company", news_company, name="news_company"),
+    path("news_company/", news_company, name="news_company"),
 
     # admin
     path("admin_login/", admin_login, name="admin_login"),
@@ -40,4 +41,5 @@ urlpatterns = [
     path("admin_news/", admin_news, name="admin_news"),
     path("add_news/", add_news, name="add_news"),
     path("delete_news/<int:id_news>/", delete_news, name="delete_news"),
+    path("update_news/<int:id_news>/", update_news, name="update_news"),
 ]
