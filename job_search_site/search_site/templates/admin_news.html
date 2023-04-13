@@ -5,6 +5,11 @@
 
 {% block content %}
 <div class="container mt-3">
+    <div class="form-group col-md-3">
+        <a class="btn btn-secondary" href="{% url 'add_news' %}">Добавить новости</a>
+    </div>
+    <br>
+
     {% for n in news %}
     <div class="row mt-3">
         <h2>{{ n.title }}</h2>
@@ -13,7 +18,8 @@
             <p>Дата добавления: {{ n.date_add}}</p>
         </div>
         <div class="form-group col-md-3">
-            <a href="{% url 'index' %}delete_news/{{n.id}}/" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить эту статью?')">Удалить</a>
+            <a href="{% url 'index' %}delete_news/{{ n.id }}/" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить эту статью?')">Удалить</a>
+            <a href="{% url 'index' %}update_news/{{ n.id }}" class="btn btn-secondary">Изменить</a>
         </div>
     </div>
     {% endfor %}
